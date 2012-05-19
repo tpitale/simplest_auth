@@ -10,7 +10,10 @@ module SimplestAuth
 
       if base.data_mapper?
         base.class_eval do
-          before(:save) {hash_password if password_required?}
+          def save(*) # get ahead of dirty tracking
+            hash_password if password_required?
+            super
+          end
         end
       elsif base.active_record? || base.mongo_mapper?
         base.class_eval do
