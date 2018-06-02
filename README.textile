@@ -15,13 +15,9 @@ If you use this gem in Rails (like most, I suspect), the session_key method will
 
 h2. Installation
 
-SimplestAuth depends (for now) on the BCrypt gem, so install that first:
+In your Gemfile:
 
-<pre><code>$ sudo gem install bcrypt-ruby</code></pre>
-
-Configure for the gem:
-
-<pre><code>config.gem 'simplest_auth'</code></pre>
+<pre><code>gem 'simplest_auth'</code></pre>
 
 h2. Usage
 
@@ -31,14 +27,14 @@ h3. Model Integration
 
 If you're starting out with a fresh User model, you just need an identifier such as @email@ and @crypted_password@ columns in your database:
 
-<pre><code>$ ./script/generate model User email:string crypted_password:string</code></pre>
+<pre><code>$ bin/rails generate model User email:string crypted_password:string</code></pre>
 
 To get started, just use the @SimplestAuth::Model@ mix-in, and tell it how you want to identify, in your User class:
 
 <pre><code>
     class User < ActiveRecord::Base
       include SimplestAuth::Model
-      
+
       authenticate_by :email
     end
 </code></pre>
@@ -48,7 +44,7 @@ The module provides accessors for both @password@ and @password_confirmation@, b
 <pre><code>
     validates_presence_of :email
     validates_uniqueness_of :email
-    
+
     validates_presence_of :password, :on => :create
     validates_confirmation_of :password, :if => :password_required?
 </code></pre>
@@ -60,10 +56,10 @@ The full model class:
 <pre><code>
     class User < ActiveRecord::Base
       include SimplestAuth::Model
-      
+
       validates_presence_of :email
       validates_uniqueness_of :email
-      
+
       validates_presence_of :password, :on => :create
       validates_confirmation_of :password, :if => :password_required?
     end
@@ -83,9 +79,9 @@ The plugin defines the @user_class@ method so that it can find the appropriate o
 
 <pre><code>
     class SessionsController < ApplicationController
-      
+
       def new; end
-      
+
       def create
         if user = User.authenticate(params[:email], params[:password])
           self.current_user = user
