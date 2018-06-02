@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
-require './lib/simplest_auth/version'
+$:.push File.expand_path("../lib", __FILE__)
+require 'simplest_auth/version'
 
 Gem::Specification.new do |s|
   s.name = %q{simplest_auth}
